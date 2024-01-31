@@ -24,7 +24,7 @@ func NewService(repo DBRepository, ai AIChat, token string) *Service {
 
 func (s *Service) sendFacebookTextMessage(recipientNumber, messageContent string) error {
 	client := &http.Client{}
-	url := "https://graph.facebook.com/v17.0/183520718179940/messages"
+	url := "https://graph.facebook.com/v18.0/124306174110269/messages"
 
 	reqBody, err := json.Marshal(map[string]interface{}{
 		"messaging_product": "whatsapp",
