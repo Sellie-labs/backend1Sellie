@@ -22,14 +22,16 @@ func (h *Handler) RegisterRoutes(app *fiber.App) {
 }
 
 func (h *Handler) Chat(c *fiber.Ctx) error {
-	identifier := "test"
 	org := 1
-	body := struct{ Input string }{}
+	body := struct {
+		Input    string `json:"Input"`
+		SenderID string `json:"SenderID"`
+	}{}
 	if err := c.BodyParser(&body); err != nil {
 		apperror.NewBadRequestError(err.Error())
 	}
 
-	h.s.Chat(body.Input, "IG", identifier, org)
+	h.s.Chat(body.Input, "IG", body.SenderID, org)
 	//Logic to get the identifier
 	//get the organisation
 	//call chat
