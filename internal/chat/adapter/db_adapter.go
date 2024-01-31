@@ -37,7 +37,7 @@ func (repo *SQLChatSessionRepository) FindById(id int) (*chat.ChatSession, error
 	return &cs, nil
 }
 
-func (repo *SQLChatSessionRepository) FindByIdentifier(identifier string) (*chat.ChatSession, error) {
+func (repo *SQLChatSessionRepository) FindByIdentifier(identifier string) (*chat.ChatSession, bool, error) {
 	log.Info("FindByIdentifier")
 	query := `SELECT id, organization_id, source, history, identifier, ai_responder FROM chat_session WHERE identifier = $1`
 	var cs chat.ChatSession
@@ -45,17 +45,17 @@ func (repo *SQLChatSessionRepository) FindByIdentifier(identifier string) (*chat
 	err := repo.db.QueryRow(query, identifier).Scan(&cs.ID, &cs.OrganizationID, &cs.Source, &historyJson, &cs.Identifier, &cs.AIResponder)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, apperror.NewNotFoundError(fmt.Sprintf("Chat session with identifier %s not found", identifier))
+			return nil, false, nil
 		}
-		return nil, apperror.NewInternalError(fmt.Sprintf("Error fetching chat session by identifier: %v", err))
+		return nil, false, apperror.NewInternalError(fmt.Sprintf("Error fetching chat session by identifier: %v", err))
 	}
 
 	if err := json.Unmarshal(historyJson, &cs.History); err != nil {
-		return nil, apperror.NewInternalError("Error unmarshalling chat session history")
+		return nil, true, apperror.NewInternalError("Error unmarshalling chat session history")
 	}
 	log.Info("FindByIdentifier2")
 
-	return &cs, nil
+	return &cs, true, nil
 }
 
 func (repo *SQLChatSessionRepository) Update(cs *chat.ChatSession) error {

@@ -2,7 +2,7 @@ package chat
 
 type DBRepository interface {
 	FindById(id int) (*ChatSession, error)
-	FindByIdentifier(identifier string) (*ChatSession, error)
+	FindByIdentifier(identifier string) (*ChatSession, bool, error)
 	Update(chatSession *ChatSession) error
 	Save(chatSession *ChatSession) error
 }

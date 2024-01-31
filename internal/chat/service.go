@@ -1,6 +1,8 @@
 package chat
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Service struct {
 	repo DBRepository
@@ -27,12 +29,12 @@ func (s *Service) CreateChatSession(chatIdentifier, source string, organizationI
 
 // Interact with the chat
 func (s *Service) Chat(message, source, chatIdentifier string, organizationID int) error {
-	c, err := s.repo.FindByIdentifier(chatIdentifier)
-	if err != nil {
+	c, check, err := s.repo.FindByIdentifier(chatIdentifier)
+	if err != nil && check != true {
 		return err
 	}
 	//If chat dont exit create it
-	if c == nil {
+	if check == false {
 		c, err = s.CreateChatSession(chatIdentifier, source, organizationID)
 	}
 	if err != nil {
@@ -59,7 +61,7 @@ func (s *Service) Chat(message, source, chatIdentifier string, organizationID in
 }
 
 // GetChatSessionByID retrieves a ChatSession by its identifier.
-func (s *Service) GetChatSessionByIdentifier(identifier string) (*ChatSession, error) {
+func (s *Service) GetChatSessionByIdentifier(identifier string) (*ChatSession, bool, error) {
 	return s.repo.FindByIdentifier(identifier)
 }
 
