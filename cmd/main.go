@@ -29,7 +29,7 @@ func main() {
 	// Initialize repository, AI chat adapter, and chat service
 	repo := adapter.NewSQLChatSessionRepository(db)
 	ai := adapter.NewChatAdapter("http://localhost") // Update the URL to your AI service if needed
-	service := chat.NewService(repo, ai)
+	service := chat.NewService(repo, ai, "EAAEccmazn6IBO0td4CEL98CA7w3NSjst4Iz85ZB7pjDbZBo7IlF2eKh9a628IJxvjMA4KmCwtZCgTTePrExe58LZB1szK4VDlpjZBoo0TY61n75MQKuAL93romYWGb9VfmQEpNPULipanwAagdds34V4BpsifWDPWo3rviSgMR8vPaQCKuonUcNHOZASrQk7qgGlq7KEpqU43CYJBiCPqX1AZDZD")
 
 	// Setup HTTP server using Fiber
 	app := fiber.New()
