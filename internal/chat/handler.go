@@ -18,7 +18,7 @@ func NewHandler(s Service) *Handler {
 
 // RegisterRoutes registers JWT-protected routes on the provided fiber App.
 func (h *Handler) RegisterRoutes(app *fiber.App) {
-	app.Post("/chat/:organisation", h.Chat)
+	app.Post("/sellie/chat/:organisation", h.Chat)
 }
 
 func (h *Handler) Chat(c *fiber.Ctx) error {
